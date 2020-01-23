@@ -50,6 +50,7 @@ Examples:
 | `0 6 * * * America/Chicago` | will execute at 6:00am (UTC/GMT -5) every day.
 |==========================================================
 
+The `schedule_allow_overlap` configuration option is true by default and allows the jdbc to execute again no matter if the previous execution has finished. If you wish to wait for the previous jdbc execution to finish before allowing a new one, set this option to false.
 
 Further documentation describing this syntax can be found https://github.com/jmettraux/rufus-scheduler#parsing-cronlines-and-time-strings[here].
 
@@ -91,6 +92,7 @@ input {
     jdbc_user => "mysql"
     parameters => { "favorite_artist" => "Beethoven" }
     schedule => "* * * * *"
+    schedule_allow_overlap => true
     statement => "SELECT * from songs where artist = :favorite_artist"
   }
 }
