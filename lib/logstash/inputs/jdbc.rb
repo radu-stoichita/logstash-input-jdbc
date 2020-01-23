@@ -158,6 +158,9 @@ module LogStash module Inputs class Jdbc < LogStash::Inputs::Base
   # There is no schedule by default. If no schedule is given, then the statement is run
   # exactly once.
   config :schedule, :validate => :string
+  
+  # When scheduler is enabled, disallow overlapping of jobs if previous execution is not yet finished
+  config :schedule_allow_overlap, :validate => :boolean, :default => true
 
   # Path to file with last run time
   config :last_run_metadata_path, :validate => :string, :default => "#{ENV['HOME']}/.logstash_jdbc_last_run"
@@ -271,7 +274,7 @@ module LogStash module Inputs class Jdbc < LogStash::Inputs::Base
 
   def run(queue)
     if @schedule
-      @scheduler = Rufus::Scheduler.new(:max_work_threads => 1)
+      @scheduler = Rufus::Scheduler.new(:max_work_threads => 1, :overlap => @schedule_allow_overlap)
       @scheduler.cron @schedule do
         execute_query(queue)
       end
