@@ -98,7 +98,7 @@ module LogStash module PluginMixins module Jdbc
         end
 
         # If value exceeds cycle, the reset to cycle_from
-        if @value >= @plugin.cycle_to
+        if @value > @plugin.cycle_to
           @value = @plugin.cycle_from
           set_initial
         end
