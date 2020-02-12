@@ -76,7 +76,7 @@ module LogStash module PluginMixins module Jdbc
   class CycleValueTracker < ValueTracking
       def initialize(handler, plugin)
         @file_handler = handler
-        @plugin = pugin
+        @plugin = plugin
         set_initial
       end
 
