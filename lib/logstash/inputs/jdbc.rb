@@ -172,12 +172,12 @@ module LogStash module Inputs class Jdbc < LogStash::Inputs::Base
   config :tracking_column, :validate => :string
 
   # Type of tracking column. "numeric", "timestamp" or "cycle"
-  config :tracking_column_type, :validate => ['numeric', 'timestamp', 'string'], :default => 'numeric'
+  config :tracking_column_type, :validate => ['numeric', 'timestamp', 'cyclic'], :default => 'numeric'
 
   # Cyclic tracking
-  config :cycle_from, :validate => :numeric, :default => 0
-  config :cycle_to, :validate => :numeric, :default => 0
-  config :cycle_step, :validate => :numeric, :default => 0
+  config :cycle_from, :validate => :number, :default => 0
+  config :cycle_to, :validate => :number, :default => 0
+  config :cycle_step, :validate => :number, :default => 0
 
   # Whether the previous run state should be preserved
   config :clean_run, :validate => :boolean, :default => false
