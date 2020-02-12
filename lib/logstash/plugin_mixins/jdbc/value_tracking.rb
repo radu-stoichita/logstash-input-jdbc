@@ -86,10 +86,21 @@ module LogStash module PluginMixins module Jdbc
       end
 
       def set_value(value)
-        if value >= @plugin.cycle_to
-          @value = @plugin.cycle_from
+        # Read persisted value
+        persisted = @file_handler.read
+
+        # If exists => increment
+        if persisted
+          @value = persisted + @plugin.cycle_step
         else
-          @value = value + @plugin.cycle_step
+          # If not sets it to 'cycle_from'
+          set_initial
+        end
+
+        # If value exceeds cycle, the reset to cycle_from
+        if @value >= @plugin.cycle_to
+          @value = @plugin.cycle_from
+          set_initial
         end
       end
     end
