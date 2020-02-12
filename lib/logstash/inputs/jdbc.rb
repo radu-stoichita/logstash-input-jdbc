@@ -171,8 +171,13 @@ module LogStash module Inputs class Jdbc < LogStash::Inputs::Base
   # If tracking column value rather than timestamp, the column whose value is to be tracked
   config :tracking_column, :validate => :string
 
-  # Type of tracking column. Currently only "numeric" and "timestamp"
-  config :tracking_column_type, :validate => ['numeric', 'timestamp'], :default => 'numeric'
+  # Type of tracking column. "numeric", "timestamp" or "cycle"
+  config :tracking_column_type, :validate => ['numeric', 'timestamp', 'cyclic_incremental'], :default => 'numeric'
+
+  # Cyclic tracking
+  config :cycle_from, :validate => :integer, :default => 0
+  config :cycle_to, :validate => :integer, :default => 0
+  config :cycle_step, :validate => :integer, :default => 0
 
   # Whether the previous run state should be preserved
   config :clean_run, :validate => :boolean, :default => false
