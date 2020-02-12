@@ -81,7 +81,8 @@ module LogStash module PluginMixins module Jdbc
       end
 
       def set_initial
-        common_set_initial(:gcd, @plugin.cycle_from)
+        @file_handler.clean
+        @value = @plugin.cycle_from
       end
 
       def set_value(value)
