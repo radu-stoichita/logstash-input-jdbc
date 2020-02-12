@@ -16,7 +16,7 @@ module LogStash module PluginMixins module Jdbc
       if plugin.use_column_value && plugin.tracking_column_type == "numeric"
         # use this irrespective of the jdbc_default_timezone setting
         NumericValueTracker.new(handler)
-      else if plugin.use_column_value && plugin.tracking_column_type == "cycle"
+      elsif plugin.use_column_value && plugin.tracking_column_type == "cycle"
         CycleValueTracker.new(handler)
       else
         if plugin.jdbc_default_timezone.nil? || plugin.jdbc_default_timezone.empty?
