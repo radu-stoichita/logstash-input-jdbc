@@ -17,7 +17,7 @@ module LogStash module PluginMixins module Jdbc
         # use this irrespective of the jdbc_default_timezone setting
         NumericValueTracker.new(handler)
       elsif plugin.use_column_value && plugin.tracking_column_type == "cycle"
-        CycleValueTracker.new(handler)
+        CycleValueTracker.new(handler, plugin)
       else
         if plugin.jdbc_default_timezone.nil? || plugin.jdbc_default_timezone.empty?
           # no TZ stuff for Sequel, use Time
@@ -74,15 +74,21 @@ module LogStash module PluginMixins module Jdbc
   end
 
   class CycleValueTracker < ValueTracking
+      def initialize(handler, plugin)
+        @file_handler = handler
+        @plugin = pugin
+        set_initial
+      end
+
       def set_initial
-        common_set_initial(:gcd, plugin.cycle_from)
+        common_set_initial(:gcd, @plugin.cycle_from)
       end
 
       def set_value(value)
-        if value >= plugin.cycle_to
-          @value = plugin.cycle_from
+        if value >= @plugin.cycle_to
+          @value = @plugin.cycle_from
         else
-          @value = value + plugin.cycle_step
+          @value = value + @plugin.cycle_step
         end
       end
     end
